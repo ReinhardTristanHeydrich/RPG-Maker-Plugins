@@ -1,0 +1,45 @@
+# Node modules (core-js ficará aqui e será ignorado)
+node_modules/
+
+# Arquivos de dependências que serão gerados automaticamente
+lib/core-js/
+
+# Arquivos de build/release temporários
+release/
+*.zip
+*.tar.gz
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp

@@ -1,0 +1,101 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggers on version tags like v1.0.0, v2.1.3, etc.
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: |
+        # Instala core-js e outras depend�ncias necess�rias
+        npm install core-js
+        # Se voc� tiver outras depend�ncias, instale aqui tamb�m
+        # npm install smol-toml
+        
+    - name: Create release directory structure
+      run: |
+        mkdir -p release/EPL/lib
+        mkdir -p release/EPL/plugins
+        
+    - name: Copy project files
+      run: |
+        # Copia os arquivos principais
+        cp EPL-config.toml release/EPL/
+        cp init.js release/EPL/
+        
+        # Copia as bibliotecas (incluindo core-js do node_modules)
+        cp -r node_modules/core-js release/EPL/lib/
+        
+        # Copia suas outras libs customizadas
+        cp -r lib/_smol-toml release/EPL/lib/ 2>/dev/null || echo "_smol-toml not found, skipping"
+        cp -r lib/smol-toml release/EPL/lib/ 2>/dev/null || echo "smol-toml not found, skipping"
+        
+        # Copia a pasta plugins
+        cp -r plugins release/EPL/ 2>/dev/null || echo "plugins folder not found, skipping"
+        
+    - name: Create ZIP archive
+      run: |
+        cd release
+        zip -r ../EPL-${{ github.ref_name }}.zip EPL/
+        cd ..
+        
+    - name: Create TAR.GZ archive
+      run: |
+        cd release
+        tar -czf ../EPL-${{ github.ref_name }}.tar.gz EPL/
+        cd ..
+        
+    - name: Generate changelog
+      id: changelog
+      run: |
+        # Gera um changelog b�sico baseado nos commits desde a �ltima tag
+        PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+        if [ -n "$PREVIOUS_TAG" ]; then
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "## Changes since $PREVIOUS_TAG" >> $GITHUB_OUTPUT
+          git log --pretty=format:"- %s (%an)" $PREVIOUS_TAG..HEAD >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        else
+          echo "CHANGELOG=Initial release" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: EPL ${{ github.ref_name }}
+        body: |
+          # EPL Plugin Loader ${{ github.ref_name }}
+          
+          ${{ steps.changelog.outputs.CHANGELOG }}
+          
+          ## Downloads
+          - **EPL-${{ github.ref_name }}.zip** - Vers�o completa com todas as depend�ncias
+          - **EPL-${{ github.ref_name }}.tar.gz** - Vers�o alternativa em formato tar.gz
+          
+          ## Instala��o
+          1. Baixe o arquivo ZIP ou TAR.GZ
+          2. Extraia na pasta do seu projeto RPG Maker MV
+          3. Configure o EPL-config.toml conforme necess�rio
+          4. Execute o init.js
+          
+        files: |
+          EPL-${{ github.ref_name }}.zip
+          EPL-${{ github.ref_name }}.tar.gz
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

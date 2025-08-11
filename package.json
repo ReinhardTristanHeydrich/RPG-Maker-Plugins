@@ -1,0 +1,33 @@
+{
+  "name": "epl-plugin-loader",
+  "version": "1.0.0",
+  "description": "External Plugin Loader for RPG Maker MV",
+  "main": "init.js",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "release": "npm run build && node scripts/create-release.js",
+    "clean": "rimraf node_modules lib/core-js release dist *.zip *.tar.gz"
+  },
+  "dependencies": {
+    "core-js": "^3.32.0"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SEU_USUARIO/RPG-Maker-Plugins.git"
+  },
+  "keywords": [
+    "rpg-maker",
+    "plugins",
+    "loader",
+    "mv"
+  ],
+  "author": "Seu Nome",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SEU_USUARIO/RPG-Maker-Plugins/issues"
+  },
+  "homepage": "https://github.com/SEU_USUARIO/RPG-Maker-Plugins#readme"
+}
