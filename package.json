@@ -16,7 +16,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SEU_USUARIO/RPG-Maker-Plugins.git"
+    "url": "git+https://github.com/ReinhardTristanHeydrich/RPG-Maker-Plugins.git",
+    "directory": "@External-Plugin-Loader_MV"
   },
   "keywords": [
     "rpg-maker",
@@ -27,7 +28,7 @@
   "author": "Seu Nome",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/SEU_USUARIO/RPG-Maker-Plugins/issues"
+    "url": "https://github.com/ReinhardTristanHeydrich/RPG-Maker-Plugins/issues"
   },
-  "homepage": "https://github.com/SEU_USUARIO/RPG-Maker-Plugins#readme"
+  "homepage": "https://github.com/ReinhardTristanHeydrich/RPG-Maker-Plugins/tree/%40External-Plugin-Loader_MV#readme"
 }

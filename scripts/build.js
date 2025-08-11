@@ -1,3 +1,4 @@
+// scripts/build.js
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
@@ -83,7 +84,7 @@ Este é um build completo do EPL com todas as dependências incluídas.
 
 ## Suporte
 
-Para suporte e documentação, visite: https://github.com/SEU_USUARIO/RPG-Maker-Plugins
+Para suporte e documentação, visite: https://github.com/ReinhardTristanHeydrich/RPG-Maker-Plugins/tree/%40External-Plugin-Loader_MV
 `;
 
 fs.writeFileSync('release/EPL/README.md', readmeContent);

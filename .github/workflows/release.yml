@@ -1,9 +1,11 @@
-name: Create Release
+name: Create EPL Release
 
 on:
   push:
     tags:
-      - 'v*.*.*'  # Triggers on version tags like v1.0.0, v2.1.3, etc.
+      - 'epl-v*.*.*'  # Triggers only on EPL tags like epl-v1.0.0, epl-v2.1.3, etc.
+    branches:
+      - '@External-Plugin-Loader_MV'  # Only runs on EPL branch
 
 jobs:
   build-and-release:
@@ -12,6 +14,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        ref: '@External-Plugin-Loader_MV'  # Força checkout da branch EPL
       
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -20,9 +24,9 @@ jobs:
         
     - name: Install dependencies
       run: |
-        # Instala core-js e outras depend�ncias necess�rias
+        # Instala core-js e outras dependências necessárias
         npm install core-js
-        # Se voc� tiver outras depend�ncias, instale aqui tamb�m
+        # Se você tiver outras dependências, instale aqui também
         # npm install smol-toml
         
     - name: Create release directory structure
@@ -61,7 +65,7 @@ jobs:
     - name: Generate changelog
       id: changelog
       run: |
-        # Gera um changelog b�sico baseado nos commits desde a �ltima tag
+        # Gera um changelog básico baseado nos commits desde a última tag
         PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
         if [ -n "$PREVIOUS_TAG" ]; then
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
@@ -83,13 +87,13 @@ jobs:
           ${{ steps.changelog.outputs.CHANGELOG }}
           
           ## Downloads
-          - **EPL-${{ github.ref_name }}.zip** - Vers�o completa com todas as depend�ncias
-          - **EPL-${{ github.ref_name }}.tar.gz** - Vers�o alternativa em formato tar.gz
+          - **EPL-${{ github.ref_name }}.zip** - Versão completa com todas as dependências
+          - **EPL-${{ github.ref_name }}.tar.gz** - Versão alternativa em formato tar.gz
           
-          ## Instala��o
+          ## Instalação
           1. Baixe o arquivo ZIP ou TAR.GZ
           2. Extraia na pasta do seu projeto RPG Maker MV
-          3. Configure o EPL-config.toml conforme necess�rio
+          3. Configure o EPL-config.toml conforme necessário
           4. Execute o init.js
           
         files: |
